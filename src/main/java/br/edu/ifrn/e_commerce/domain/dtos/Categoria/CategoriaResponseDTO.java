@@ -12,5 +12,5 @@ import lombok.Setter;
 public class CategoriaResponseDTO {
     private Long id;
     private String nome;
-    private String status;
+    private String descricao;
 }

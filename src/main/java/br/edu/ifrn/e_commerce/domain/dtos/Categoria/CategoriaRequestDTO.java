@@ -14,5 +14,5 @@ public class CategoriaRequestDTO {
     @NotBlank(message = "Nome da categoria é obrigatório.")
     private String nome;
 
-    private String status;
+    private String descricao;
 }

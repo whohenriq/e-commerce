@@ -9,6 +9,6 @@ import br.edu.ifrn.e_commerce.domain.Categoria;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
-    boolean existsByName(String nome);
-    Optional<Categoria> findByName(String nome);
+    boolean existsByNome(String nome);
+    Optional<Categoria> findByNome(String nome);
 }
