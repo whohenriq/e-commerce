@@ -16,7 +16,6 @@ import lombok.Setter;
 public class ProdutoResponseDTO {
     private Long id;
     private String nome;
-    private String status;
     private BigDecimal preco;
     private Integer estoque;
     private List<CategoriaResponseDTO> categorias;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifrn.e_commerce.domain.Categoria;
@@ -40,13 +41,12 @@ public class ProdutoService {
         return produtoMapper.toResponseDTO(produto);
     }
 
-    public Page<ProdutoResponseDTO> listAllProducts(
-    
-    ){
-        PageRequest pageRequest = PageRequest.of(0, 1);
-        Page<Produto> page = produtoRepository.findAll(pageRequest);
+    public Page<ProdutoResponseDTO> listAllProducts(int page, int size)
+    {
+        Pageable pageRequest = PageRequest.of(page, size);
+        Page<Produto> produtoPage = produtoRepository.findAll(pageRequest);
 
-        Page<ProdutoResponseDTO> response = page.map(produtoMapper::toResponseDTO);
+        Page<ProdutoResponseDTO> response = produtoPage.map(produtoMapper::toResponseDTO);
 
         return response;
     }

@@ -39,7 +39,7 @@ public class ProdutoController {
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
-        Page<ProdutoResponseDTO> produtos = produtoService.listAllProducts();
+        Page<ProdutoResponseDTO> produtos = produtoService.listAllProducts(page, size);
         return ResponseEntity.ok(produtos.getContent());
     }
 
