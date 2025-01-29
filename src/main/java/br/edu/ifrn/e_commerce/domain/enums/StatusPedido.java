@@ -6,13 +6,13 @@ public enum StatusPedido {
     PAGO("Pago"),
     ENVIADO("Enviado");
 
-    private String status;
+    private final String descricao;
 
-    StatusPedido(String status) {
-        this.status = status;
+    StatusPedido(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getStatus() {
-        return this.status;
+        return this.descricao;
     }
 }

@@ -19,7 +19,7 @@ public class PedidoResponseDTO {
     private Long id;
     private LocalDateTime dataPedido;
     private BigDecimal valorTotal;
-    private StatusPedido status;
+    private StatusPedido statusPedido;
     private Long clienteId;
     private List<ItemPedidoResponseDTO> itemsPedido;
 }

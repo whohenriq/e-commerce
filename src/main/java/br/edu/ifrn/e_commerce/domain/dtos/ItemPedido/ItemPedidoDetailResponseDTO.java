@@ -1,5 +1,7 @@
 package br.edu.ifrn.e_commerce.domain.dtos.ItemPedido;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemPedidoResponseDTO {
-    private ItemPedidoDetailResponseDTO produto;
-    private Integer quantidade;
+public class ItemPedidoDetailResponseDTO {
+    private Long id;
+    private String nome;
+    private BigDecimal preco;
 }
