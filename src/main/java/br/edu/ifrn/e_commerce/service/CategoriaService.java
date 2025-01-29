@@ -2,6 +2,7 @@ package br.edu.ifrn.e_commerce.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,10 @@ public class CategoriaService {
 
     @Autowired
     private ProdutoMapper produtoMapper;
+
+    private Pageable createPageRequestUsing(int page, int size) {
+        return PageRequest.of(page, size);
+    }
     
     public CategoriaResponseDTO create(CategoriaRequestDTO categoriaRequestDTO) {
         var categoria = categoriaMapper.toEntity(categoriaRequestDTO);
@@ -42,9 +47,14 @@ public class CategoriaService {
         return  categoriaMapper.toResponseDTO(categoria);
     }
 
-    public Page<CategoriaResponseDTO> listAllCategorys(Pageable pageable, String nome, String descricao){
-        Page<Categoria> categorias = categoriaRepository.findAll(pageable);
-        return categoriaMapper.toDTOList(categorias);
+    public Page<CategoriaResponseDTO> listAllCategorys(int page, int size){
+        Pageable pageRequest = createPageRequestUsing(page, size);
+        
+        Page<Categoria> categoriaPage = categoriaRepository.findAll(pageRequest);
+        
+        Page<CategoriaResponseDTO> response = categoriaPage.map(categoriaMapper::toResponseDTO);
+
+        return response;
     }
 
     public CategoriaResponseDTO getById(Long id) {
