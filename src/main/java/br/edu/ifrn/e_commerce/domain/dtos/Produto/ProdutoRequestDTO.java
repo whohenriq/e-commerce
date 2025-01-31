@@ -3,11 +3,11 @@ package br.edu.ifrn.e_commerce.domain.dtos.Produto;
 import java.math.BigDecimal;
 import java.util.List;
 
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class ProdutoRequestDTO {
     private String descricao;
 
     @NotNull(message = "O preço é obrigatório")
-    @DecimalMin(value = "0.0", inclusive = false, message = "O preço do produto deve ser maior do que 0")
+    @Positive(message = "O preço do produto deve ser positivo")
     private BigDecimal preco;
 
     @NotNull(message = "A quantidade do produto no estoque é obrigatória")

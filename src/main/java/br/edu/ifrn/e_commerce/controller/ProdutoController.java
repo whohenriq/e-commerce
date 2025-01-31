@@ -36,10 +36,11 @@ public class ProdutoController {
 
     @GetMapping
     public ResponseEntity<List<ProdutoResponseDTO>> listAllProducts(
+       @RequestParam(required = false) String nome,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
-        Page<ProdutoResponseDTO> produtos = produtoService.listAllProducts(page, size);
+        Page<ProdutoResponseDTO> produtos = produtoService.listAllProducts(nome, page, size);
         return ResponseEntity.ok(produtos.getContent());
     }
 

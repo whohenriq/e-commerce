@@ -1,5 +1,6 @@
 package br.edu.ifrn.e_commerce.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import br.edu.ifrn.e_commerce.exception.ResourceNotFoundException;
 import br.edu.ifrn.e_commerce.mapper.ProdutoMapper;
 import br.edu.ifrn.e_commerce.repository.CategoriaRepository;
 import br.edu.ifrn.e_commerce.repository.ProdutoRepository;
+import jakarta.validation.ValidationException;
 
 @Service
 public class ProdutoService {
@@ -33,6 +35,11 @@ public class ProdutoService {
     }
 
     public ProdutoResponseDTO create(ProdutoRequestDTO produtoRequestDTO) {
+
+        if (produtoRequestDTO.getPreco().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ValidationException("O preço do produto não pode ser negativo");
+        }
+        
         var produto =  produtoMapper.toEntity(produtoRequestDTO);
         var categorias = buscarCategoriasPorId(produtoRequestDTO.getCategoriaIds());        
         produto.setCategorias(categorias);
@@ -41,7 +48,7 @@ public class ProdutoService {
         return produtoMapper.toResponseDTO(produto);
     }
 
-    public Page<ProdutoResponseDTO> listAllProducts(int page, int size)
+    public Page<ProdutoResponseDTO> listAllProducts(String nome, int page, int size)
     {
         Pageable pageRequest = PageRequest.of(page, size);
         Page<Produto> produtoPage = produtoRepository.findAll(pageRequest);
@@ -66,6 +73,10 @@ public class ProdutoService {
             .findById(id)
             .orElseThrow( () -> new ResourceNotFoundException
             ("Produto não encontrado"));
+        
+        if (produtoRequestDTO.getPreco().compareTo(BigDecimal.ZERO) < 0) {
+            throw new ValidationException("O preço do produto não pode ser negativo");
+        }
 
         produtoMapper.updateEntityFromDTO(produtoRequestDTO, produto);
         var updateProduct = produtoRepository.save(produto);
