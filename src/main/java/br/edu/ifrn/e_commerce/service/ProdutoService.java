@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifrn.e_commerce.domain.Categoria;
@@ -17,6 +18,7 @@ import br.edu.ifrn.e_commerce.exception.ResourceNotFoundException;
 import br.edu.ifrn.e_commerce.mapper.ProdutoMapper;
 import br.edu.ifrn.e_commerce.repository.CategoriaRepository;
 import br.edu.ifrn.e_commerce.repository.ProdutoRepository;
+import br.edu.ifrn.e_commerce.specification.ProdutoSpecification;
 import jakarta.validation.ValidationException;
 
 @Service
@@ -48,10 +50,15 @@ public class ProdutoService {
         return produtoMapper.toResponseDTO(produto);
     }
 
-    public Page<ProdutoResponseDTO> listAllProducts(String nome, int page, int size)
+    public Page<ProdutoResponseDTO> listAllProducts(String nome, Long categoriaId, BigDecimal precoMin, BigDecimal precoMax, int page, int size)
     {
+        Specification<Produto> spec = Specification
+            .where(ProdutoSpecification.comNome(nome))
+            .and(ProdutoSpecification.comCategoria(categoriaId))
+            .and(ProdutoSpecification.comPrecoEntre(precoMin, precoMax));
+
         Pageable pageRequest = PageRequest.of(page, size);
-        Page<Produto> produtoPage = produtoRepository.findAll(pageRequest);
+        Page<Produto> produtoPage = produtoRepository.findAll(spec, pageRequest);
 
         Page<ProdutoResponseDTO> response = produtoPage.map(produtoMapper::toResponseDTO);
 

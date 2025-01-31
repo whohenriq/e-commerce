@@ -1,8 +1,11 @@
 package br.edu.ifrn.e_commerce.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/produtos")
 @Tag(name = "Produtos")
+@EnableCaching
 public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
@@ -35,12 +39,16 @@ public class ProdutoController {
     }
 
     @GetMapping
+    @Cacheable("produtosCache")
     public ResponseEntity<List<ProdutoResponseDTO>> listAllProducts(
-       @RequestParam(required = false) String nome,
+        @RequestParam(required = false) String nome,
+        @RequestParam(required = false) Long categoria,
+        @RequestParam(required = false) BigDecimal precoMin,
+        @RequestParam(required = false) BigDecimal precoMax,
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size
     ) {
-        Page<ProdutoResponseDTO> produtos = produtoService.listAllProducts(nome, page, size);
+        Page<ProdutoResponseDTO> produtos = produtoService.listAllProducts(nome, categoria, precoMin, precoMax,  page, size);
         return ResponseEntity.ok(produtos.getContent());
     }
 
